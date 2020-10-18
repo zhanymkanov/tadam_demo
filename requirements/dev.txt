@@ -1,0 +1,10 @@
+-r base.txt
+black
+isort
+autoflake
+flake8
+mypy
+sqlalchemy-stubs
+pytest
+pytest-cov
+pytest-flake8
