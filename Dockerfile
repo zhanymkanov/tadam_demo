@@ -11,18 +11,14 @@ ENV PYTHONIOENCODING utf-8
 
 COPY requirements/ /tmp/requirements
 
-#================================================
-# Packages
-#================================================
-RUN pip install --upgrade pip && pip install wheel &&\
+RUN pip install -U pip && \
     pip install --no-cache-dir -r /tmp/requirements/dev.txt
 
+COPY . /src
+ENV PATH "$PATH:/src/bin"
 
-#================================================
-# Code
-#================================================
-COPY . /proj
-RUN useradd -m -d /proj -s /bin/bash app \
-    && chown -R app:app /proj/*
-WORKDIR /proj
+RUN useradd -m -d /src -s /bin/bash app \
+    && chown -R app:app /src/* && chmod +x /src/bin/*
+
+WORKDIR /src
 USER app
