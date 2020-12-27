@@ -1,3 +1,5 @@
+wheel
+psycopg2-binary
 bcrypt
 databases[postgresql]
 fastapi
@@ -6,3 +8,5 @@ python-jose[cryptography]
 python-multipart
 pydantic[email]
 uvicorn
+phonenumbers
+sqlalchemy-utils
