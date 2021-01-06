@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.auth.routers import router as auth_router
+from app.videos.routers import router as video_router
 
 from .database import database
 
@@ -18,3 +19,4 @@ async def shutdown():
 
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
+app.include_router(video_router, prefix="/videos", tags=["Video"])
