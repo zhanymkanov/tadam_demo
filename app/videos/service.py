@@ -1,10 +1,12 @@
+from typing import Generator
+
 from fastapi import UploadFile
 from pydantic import UUID4
 from sqlalchemy import select
 
 from app.database import categories, database, users, videos
 from app.videos.models import VideoResponse, VideoUpload
-from app.videos.utils import generate_file_path
+from app.videos.utils import generate_file_path, read_by_chunks
 
 
 async def get_joined_by_id(video_id: UUID4) -> VideoResponse:
@@ -36,3 +38,7 @@ async def save_video(video_file: UploadFile) -> str:
         f.write(file_data)
 
     return file_path
+
+
+async def stream_file(file_path: str) -> Generator[bytes, None, None]:
+    return read_by_chunks(file_path)

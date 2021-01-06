@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, File, Form, UploadFile, status
+from fastapi.responses import StreamingResponse
 from pydantic import UUID4
 
 from app.auth.service import get_jwt_user_active
@@ -8,7 +9,7 @@ from app.videos.models import VideoResponse, VideoUpload
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=VideoResponse)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=VideoResponse)
 async def post_video(
     title: str = Form(...),
     description: str = Form(...),
@@ -28,3 +29,14 @@ async def post_video(
     )
 
     return video_stored
+
+
+@router.get("/{video_id}", response_model=VideoResponse)
+async def get_video(video_id: UUID4):
+    return await service.get_joined_by_id(video_id)
+
+
+@router.get("/stream/{video_id}", response_model=VideoResponse)
+async def stream_video(video_id: UUID4):
+    video_stored = await service.get_joined_by_id(video_id)
+    return StreamingResponse(await service.stream_file(video_stored.file_path))
