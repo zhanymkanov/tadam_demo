@@ -1,6 +1,9 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.auth.service import get_jwt_user_active
+from app.videos.models import VideoResponse
 
 from . import service
 from .constants import ErrorCode
@@ -10,10 +13,7 @@ router = APIRouter()
 
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=Category)
-async def post_category(
-    category_data: Category,
-    user=Depends(get_jwt_user_active),
-):
+async def post_category(category_data: Category, user=Depends(get_jwt_user_active)):
     if not user.get("is_superuser"):  # TODO only superusers can add
         pass
 
@@ -23,9 +23,7 @@ async def post_category(
 @router.post(
     "/{category_slug}", status_code=status.HTTP_200_OK, response_model=Category
 )
-async def get_category(
-    category_slug: str,
-):
+async def get_category(category_slug: str):
     category = await service.get_by_slug(category_slug)
     if not category:
         raise HTTPException(
@@ -34,3 +32,12 @@ async def get_category(
         )
 
     return category
+
+
+@router.get(
+    "/{category_slug}/videos",
+    status_code=status.HTTP_200_OK,
+    response_model=List[VideoResponse],
+)
+async def get_category_videos(category_slug: str):
+    return await service.get_videos(category_slug)
