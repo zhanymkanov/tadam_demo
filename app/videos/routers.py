@@ -36,7 +36,7 @@ async def get_video(video_id: UUID4):
     return await service.get_joined_by_id(video_id)
 
 
-@router.get("/stream/{video_id}", response_model=VideoResponse)
+@router.get("/{video_id}/stream", response_model=VideoResponse)
 async def stream_video(video_id: UUID4):
     video_stored = await service.get_joined_by_id(video_id)
     return StreamingResponse(await service.stream_file(video_stored.file_path))
