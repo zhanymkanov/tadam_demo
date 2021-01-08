@@ -50,7 +50,7 @@ async def exists(*, email: EmailStr = None, phone: str = None):
 
 
 async def create(*, user_in: UserRegister):
-    if exists(email=user_in.email, phone=user_in.phone):
+    if await exists(email=user_in.email, phone=user_in.phone):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=ErrorCode.REGISTER_USER_ALREADY_EXISTS,

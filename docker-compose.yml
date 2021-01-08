@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  gifter:
+  tadam:
     env_file:
       - .env
     build: .
     volumes:
-      - ./:/proj
+      - ./:/src
     ports:
       - 8000:8000
     depends_on:
@@ -16,13 +16,13 @@ services:
   db:
     image: library/postgres:13
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=tadam
+      - POSTGRES_PASSWORD=tadam
+      - POSTGRES_DB=tadam
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - wow_pg_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5431:5432
 
 volumes:
-  pg_data:
+  wow_pg_data:
