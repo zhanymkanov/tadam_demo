@@ -18,7 +18,14 @@ async def get_by_slug(category_slug: str) -> Optional[Category]:
     return category
 
 
-async def get_videos(category_slug: str) -> List[VideoResponse]:
+async def create(category: Category) -> Category:
+    insert_query = categories.insert().values(**category.dict()).returning(categories)
+
+    category_created = await database.fetch_one(insert_query)
+    return category_created
+
+
+async def get_category_videos(category_slug: str) -> List[VideoResponse]:
     category = videos.join(categories).join(users)
     extract_query = (
         select(
@@ -35,10 +42,3 @@ async def get_videos(category_slug: str) -> List[VideoResponse]:
     stored_video = await database.fetch_all(extract_query)
 
     return stored_video
-
-
-async def create(category: Category) -> Category:
-    insert_query = categories.insert().values(**category.dict()).returning(categories)
-
-    category_created = await database.fetch_one(insert_query)
-    return category_created
