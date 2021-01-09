@@ -9,6 +9,7 @@ from sqlalchemy import (
     SmallInteger,
     String,
     Table,
+    UniqueConstraint,
     create_engine,
     func,
 )
@@ -108,6 +109,7 @@ video_likes = Table(
     Column("user_id", ForeignKey("users.id", ondelete="CASCADE")),
     Column("created_at", DateTime, server_default=func.now()),
     Column("updated_at", DateTime, onupdate=func.now()),
+    UniqueConstraint("video_id", "user_id", name="video_likes_video_id_user_id_key"),
 )
 
 video_comments = Table(
