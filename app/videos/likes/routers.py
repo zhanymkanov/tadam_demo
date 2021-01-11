@@ -10,7 +10,7 @@ from . import service
 router = APIRouter()
 
 
-@router.post("/{video_id}/like", status_code=status.HTTP_201_CREATED)
+@router.post("/{video_id}/likes", status_code=status.HTTP_201_CREATED)
 async def like_video(video_id: UUID4, user=Depends(get_jwt_user_active)):
     video = await videos_service.get_by_id(video_id)
     if not video:
@@ -26,6 +26,6 @@ async def like_video(video_id: UUID4, user=Depends(get_jwt_user_active)):
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@router.delete("/{video_id}/like", status_code=status.HTTP_200_OK)
+@router.delete("/{video_id}/likes", status_code=status.HTTP_200_OK)
 async def dislike_video(video_id: UUID4, user=Depends(get_jwt_user_active)):
     return await service.dislike_video(video_id, user["id"])
