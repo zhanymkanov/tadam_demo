@@ -40,4 +40,4 @@ async def get_category(category_slug: str):
     response_model=List[VideoResponse],
 )
 async def get_category_videos(category_slug: str):
-    return await service.get_videos(category_slug)
+    return await service.get_category_videos(category_slug)

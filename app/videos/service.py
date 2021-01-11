@@ -9,6 +9,13 @@ from app.videos.models import VideoResponse, VideoUpload
 from app.videos.utils import generate_file_path, read_by_chunks
 
 
+async def get_by_id(video_id: UUID4) -> VideoResponse:
+    extract_query = select((videos,)).where(videos.c.id == video_id)
+    stored_video = await database.fetch_one(extract_query)
+
+    return stored_video
+
+
 async def get_joined_by_id(video_id: UUID4) -> VideoResponse:
     category = videos.join(categories).join(users)
     extract_query = (
