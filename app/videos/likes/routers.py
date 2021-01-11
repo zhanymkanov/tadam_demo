@@ -20,7 +20,7 @@ async def like_video(video_id: UUID4, user=Depends(get_jwt_user_active)):
         )
 
     liked = await service.like_video(video_id, user["id"])
-    if not liked:
+    if not liked:  # i.e. it was already liked
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return Response(status_code=status.HTTP_201_CREATED)
