@@ -1,0 +1,2 @@
+class ErrorCode:
+    USER_NOT_OWNER = "USER_IS_NOT_AN_OWNER_OF_THIS_COMMENT"
