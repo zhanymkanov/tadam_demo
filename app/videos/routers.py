@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 from fastapi import APIRouter, Depends, File, Form, UploadFile, status
 from fastapi.responses import StreamingResponse
 from pydantic import UUID4
@@ -5,6 +7,9 @@ from pydantic import UUID4
 from app.auth.service import get_jwt_user_active
 from app.videos import service
 from app.videos.models import VideoResponse, VideoUpload
+from app.videos.tags import service as tags_service
+from app.videos.tags.models import Tag
+from app.videos.tags.utils import clean_tags
 
 router = APIRouter()
 
@@ -14,6 +19,7 @@ async def post_video(
     title: str = Form(...),
     description: str = Form(...),
     category_id: UUID4 = Form(...),
+    tags: Optional[Tuple[Tag]] = Depends(clean_tags),
     video_file: UploadFile = File(...),
     user=Depends(get_jwt_user_active),
 ):
@@ -27,6 +33,9 @@ async def post_video(
             file_path=file_path,
         )
     )
+    if tags:
+        stored_tags = await tags_service.add_video_tags(video_stored.id, tags)
+        video_stored.tags = stored_tags
 
     return video_stored
 

@@ -16,6 +16,8 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy_utils.types import CountryType, PhoneNumberType
 
+from app.videos.tags.constants import VIDEO_TAG_UNIQUE_CONSTRAINT
+
 from .config import DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
@@ -99,6 +101,7 @@ video_tags = Table(
     Column("tag_id", ForeignKey("tags.id", ondelete="CASCADE")),
     Column("created_at", DateTime, server_default=func.now()),
     Column("updated_at", DateTime, onupdate=func.now()),
+    UniqueConstraint("video_id", "tag_id", name=VIDEO_TAG_UNIQUE_CONSTRAINT),
 )
 
 video_likes = Table(
