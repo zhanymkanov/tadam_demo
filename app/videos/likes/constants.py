@@ -1,0 +1,1 @@
+VIDEO_LIKE_UNIQUE_CONSTRAINT = "video_likes_video_id_user_id_key"

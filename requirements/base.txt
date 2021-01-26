@@ -10,3 +10,4 @@ pydantic[email]
 uvicorn
 phonenumbers
 sqlalchemy-utils
+python-slugify

@@ -1,6 +1,9 @@
 import uuid
+from typing import List
 
 from pydantic import UUID4, BaseModel, Field
+
+from app.videos.tags.models import Tag
 
 
 class VideoBase(BaseModel):
@@ -18,3 +21,4 @@ class VideoUpload(VideoBase):
 class VideoResponse(VideoBase):
     category: str
     owner: str
+    tags: List[Tag] = None
